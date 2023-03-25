@@ -1,30 +1,34 @@
-import requests
-from bs4 import BeautifulSoup
+import requests      # Для запросов по APi
+from unyts import HHAPIParser
+from unyts import HHAPIExporter
 
-# задаём параметры запроса
-url = 'https://hh.ru'
+
+
+
+# задаем параметры запроса
+url = 'https://api.hh.ru/vacancies'
 params = {
     'text': 'Python разработчик',
-    'area': 1,
-    'st': 'searchVacancy',
-    'page': 0
+    'area': 113,  # 113 - Россия
+    'page': 0,
+    'per_page': 100  # количество возвращаемых вакансий на странице
 }
 
-# отправляем GET-запрос
-response = requests.get(url + '/search/vacancy', params=params)
+# добавляем параметры авторизации
+client_id = 'ваш Client ID'
+client_secret = 'ваш Client Secret'
+headers = {
+    'User-Agent': 'HH-User-Agent',
+    'accept': 'application/json, text/plain, */*',
+}
 
-# парсим HTML-страницу
-soup = BeautifulSoup(response.text, 'html.parser')
-
-# находим все блоки с вакансиями
-vacancy_blocks = soup.find_all('div', {'class': 'vacancy-serp-item'})
+# отправляем GET-запрос для получения списка вакансий
+response = requests.get(url, headers=headers, params=params)
 
 # выводим найденные вакансии
-for vacancy_block in vacancy_blocks:
-    vacancy_title_element = vacancy_block.find('a', {'data-qa': 'vacancy-serp__vacancy-title'})
-    vacancy_href = vacancy_title_element['href']
-    vacancy_title = vacancy_title_element.getText()
-    employer_name = vacancy_block.find('a', {'data-qa': 'vacancy-serp__vacancy-employer'}).getText()
-    print(f'{vacancy_title}\n'
-          f'{employer_name}\n'
-          f'{vacancy_href}\n')
+vacancies = response.json()
+#print(vacancies)
+for vacancy in vacancies['items']:
+        print(f'{vacancy["name"]}\n'
+             f'{vacancy["employer"]["name"]}\n'
+             f'{vacancy["alternate_url"]}\n')
