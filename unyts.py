@@ -34,8 +34,9 @@ class HHAPIParser:
         # Обрабатываем полученные данные
         vacancies = []
         for vacancy_data in response.json()['items']:
-            vacancy = Vacancy(vacancy_data['id'], vacancy_data['name'], vacancy_data['salary']['from'], vacancy_data['salary']['to'])
-            vacancies.append(vacancy)
+            if vacancy_data['salary']['from'] is not None:
+                vacancy = Vacancy(vacancy_data['id'], vacancy_data['name'], vacancy_data['salary']['from'], vacancy_data['salary']['to'])
+                vacancies.append(vacancy)
 
         # Возвращаем список вакансий
         return vacancies
@@ -51,4 +52,5 @@ class HHAPIExporter:
             writer = csv.writer(csvfile)
             writer.writerow(['ID', 'Название', 'Зарплата с', 'Зарплата до'])
             for vacancy in vacancies:
-                writer.writerow([vacancy.id, vacancy.name, vacancy.salary_from, vacancy.salary_to])
+                if vacancy.salary_from is not None:
+                    writer.writerow([vacancy.id, vacancy.name, vacancy.salary_from, vacancy.salary_to])
