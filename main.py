@@ -34,7 +34,7 @@ for vacancy in vacancies['items']:
              f'{vacancy["employer"]["name"]}\n'
              f'{vacancy["alternate_url"]}\n')
 '''
-from unyts import HHAPIParser
+from unyts import HHAPIParser, fetch_vacancies, export_vacancies
 from unyts import HHAPIExporter
 
 
@@ -44,11 +44,11 @@ def run_parser():
     parser = HHAPIParser()
 
     # Получаем вакансии через API
-    vacancies = parser.fetch_vacancies()
+    vacancies = fetch_vacancies()
     print(vacancies)
 
     # Создаем экземпляр экспортера
     exporter = HHAPIExporter()
-
+    print(exporter)
     # Экспортируем данные в нужном формате
-    exporter.export_vacancies(vacancies)
+    export_vacancies(vacancies)
