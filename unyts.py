@@ -33,16 +33,11 @@ def fetch_vacancies():
     vacancies = []
     for vacancy_data in response.json()['items']:
         if vacancy_data['salary'] is not None:
-            vacancy = Vacancy(vacancy["name"], vacancy["employer"]["name"], vacancy_data['salary'],
-                              vacancy["alternate_url"])
+            vacancy = Vacancy(vacancy_data["name"], vacancy_data["employer"]["name"], vacancy_data['salary'], vacancy_data["alternate_url"])
             vacancies.append(vacancy)
 
     # Возвращаем список вакансий
     return vacancies
-
-
-class HHAPIParser:
-    pass
 
 
 # exporter
@@ -57,5 +52,8 @@ def export_vacancies(vacancies):
 
 
 class HHAPIExporter:
-    def __init__(self):
-        pass
+    pass
+
+
+class HHAPIParser:
+    pass
