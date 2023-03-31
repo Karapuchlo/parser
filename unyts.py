@@ -110,3 +110,7 @@ class SuperjobAPIParser:
         print(vacancies)
         # Возвращаем список вакансий
         return vacancies
+
+
+class SuperjobAPIExporter:
+    pass
