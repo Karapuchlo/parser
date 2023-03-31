@@ -1,56 +1,40 @@
-'''
-import requests      # Для запросов по APi
-from unyts import HHAPIParser
-from unyts import HHAPIExporter
+
+from unyts import HHAPIExporter, fetch_vacancies_hh, SuperjobAPIParser
+from unyts import HHAPIParser, export_vacancies_hh
 
 
-
-
-# задаем параметры запроса
-url = 'https://api.hh.ru/vacancies'
-params = {
-    'text': 'Python разработчик',
-    'area': 113,  # 113 - Россия
-    'page': 0,
-    'per_page': 100  # количество возвращаемых вакансий на странице
-}
-
-# добавляем параметры авторизации
-client_id = 'ваш Client ID'
-client_secret = 'ваш Client Secret'
-headers = {
-    'User-Agent': 'HH-User-Agent',
-    'accept': 'application/json, text/plain, */*',
-}
-
-# отправляем GET-запрос для получения списка вакансий
-response = requests.get(url, headers=headers, params=params)
-
-# выводим найденные вакансии
-vacancies = response.json()
-#print(vacancies)
-for vacancy in vacancies['items']:
-        print(f'{vacancy["name"]}\n'
-             f'{vacancy["employer"]["name"]}\n'
-             f'{vacancy["alternate_url"]}\n')
-'''
-from unyts import HHAPIExporter, fetch_vacancies
-from unyts import HHAPIParser, export_vacancies
-
-
-def run_parser():
+def run_parser_hh():
     # Создаем экземпляр парсера
-    parser = HHAPIParser()
+    parser_hh = HHAPIParser()
 
     # Получаем вакансии через API
-    vacancies = fetch_vacancies()
-    print(vacancies)
+    vacancies_hh = fetch_vacancies_hh()
+    print(vacancies_hh)
 
     # Создаем экземпляр экспортера
-    exporter = HHAPIExporter()
-    print(exporter)
+    exporter_hh = HHAPIExporter()
+    print(exporter_hh)
     # Экспортируем данные в нужном формате
-    export_vacancies(vacancies)
+    export_vacancies_hh(vacancies_hh)
 
 
-run_parser()
+run_parser_hh()
+
+
+def fetch_vacancies_Superjob():
+    pass
+
+
+def run_parser_Superjob():
+    # Создаем экземпляр парсера
+    parser_Superjob = SuperjobAPIParser()
+
+    # Получаем вакансии через API
+    vacancies_Superjob = fetch_vacancies_Superjob()
+    print(vacancies_Superjob)
+
+    # Создаем экземпляр экспортера
+    exporter_Superjob = HHAPIExporter()
+    print(exporter_Superjob)
+    # Экспортируем данные в нужном формате
+    export_vacancies_hh(vacancies_Superjob)
