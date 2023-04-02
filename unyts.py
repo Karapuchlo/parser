@@ -44,7 +44,7 @@ def fetch_vacancies_hh():
 # exporter
 def export_vacancies_hh(vacancies):
     # Экспортируем вакансии в CSV-файл
-    with open('vacancies.csv', 'w', newline='') as csvfile:
+    with open('vacancies.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['Название', 'Работодатель', 'Зарплата', 'Ссылка'])
         for vacancy in vacancies:
@@ -105,8 +105,9 @@ class SuperjobAPIParser:
         # Обрабатываем полученные данные
         vacancies = []
         for vacancy_data in response.json()['objects']:
-            vacancy = Vacancy(id=vacancy_data['id'], name=vacancy_data['profession'], salary_from=vacancy_data['payment_from'], salary_to=vacancy_data['payment_to'])
-            vacancies.append(vacancy)
+            if vacancy_data['payment_from'] is not None:
+                vacancy = Vacancy(id=vacancy_data['id'], name=vacancy_data['profession'], salary_from=vacancy_data['payment_from'], salary_to=vacancy_data['payment_to'])
+                vacancies.append(vacancy)
         print(vacancies)
         # Возвращаем список вакансий
         return vacancies
@@ -114,3 +115,35 @@ class SuperjobAPIParser:
 
 class SuperjobAPIExporter:
     pass
+
+def run_parser_hh():
+    # Создаем экземпляр парсера
+    parser_hh = HHAPIParser()
+
+    # Получаем вакансии через API
+    vacancies_hh = fetch_vacancies_hh()
+    print(vacancies_hh)
+
+    # Создаем экземпляр экспортера
+    exporter_hh = HHAPIExporter()
+    print(exporter_hh)
+    # Экспортируем данные в нужном формате
+    export_vacancies_hh(vacancies_hh)
+
+def fetch_vacancies_Superjob():
+    pass
+
+
+def run_parser_Superjob():
+    # Создаем экземпляр парсера
+    parser_Superjob = SuperjobAPIParser()
+
+    # Получаем вакансии через API
+    vacancies_Superjob = fetch_vacancies_Superjob()
+    print(vacancies_Superjob)
+
+    # Создаем экземпляр экспортера
+    exporter_Superjob = HHAPIExporter()
+    print(exporter_Superjob)
+    # Экспортируем данные в нужном формате
+    export_vacancies_hh(vacancies_Superjob)
