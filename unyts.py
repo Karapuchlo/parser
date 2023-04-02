@@ -44,7 +44,7 @@ def fetch_vacancies_hh():
 # exporter
 def export_vacancies_hh(vacancies):
     # Экспортируем вакансии в CSV-файл
-    with open('vacancies.csv', 'a', newline='') as csvfile:
+    with open('vacancies.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['Название', 'Работодатель', 'Зарплата', 'Ссылка'])
         for vacancy in vacancies:
