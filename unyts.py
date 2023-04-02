@@ -76,10 +76,10 @@ class SuperjobAPIParser:
         # Возвращаем токен авторизации
         return response.json()['access_token']
 
-    def fetch_vacancies_Superjob(self, keyword, location, salary_from, salary_to, count):
+    def fetch_vacancies_Superjob(self, salary_from, salary_to, count):
         # Задаем параметры запроса
-        headers = {'X-Api-App-Id': 'v3.r.137463232.a085bb1aaa3c51a9b7b88481b7075aa785b24619.5bc49efdee8512297bdf804e2d7b7cc7f3736ec3', 'Authorization': 'Bearer ' + self.token}
-        params = {'town': location, 'keyword': keyword, 'count': count}
+        headers = {'X-Api-App-Id': 'v3.r.137463232.a085bb1aaa3c51a9b7b88481b7075aa785b24619.5bc49efdee8512297bdf804e2d7b7cc7f3736ec3'}
+        params = {'town': 'Москва', 'count': '100'}
 
         # Отправляем GET-запрос на получение списка вакансий
         if salary_from and salary_to:
