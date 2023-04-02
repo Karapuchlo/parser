@@ -61,12 +61,12 @@ def main():
             print('С какого сайта парсим?')
             print("1. HH")
             print("2. Superjob")
-            viborparsera = input('Введите номер действия: ')
+            viborparsera = input('Введите номер сайта: ')
             if viborparsera == 1:
                 run_parser_hh()
                 # Экспортируем вакансии
                 print('Данные успешно экспортированы в файл vacancies.csv')
-            if viborparsera == 2:
+            elif viborparsera == 2:
                 run_parser_Superjob()
                 # Экспортируем вакансии
                 print('Данные успешно экспортированы в файл vacancies.csv')
