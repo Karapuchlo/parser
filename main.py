@@ -62,15 +62,16 @@ def main():
             print("1. HH")
             print("2. Superjob")
             viborparsera = input('Введите номер сайта: ')
-            if viborparsera == 1:
+            if viborparsera == '1':
                 run_parser_hh()
                 # Экспортируем вакансии
                 print('Данные успешно экспортированы в файл vacancies.csv')
-            elif viborparsera == 2:
+                break
+            elif viborparsera == '2':
                 run_parser_Superjob()
                 # Экспортируем вакансии
                 print('Данные успешно экспортированы в файл vacancies.csv')
-
+                break
         elif action == '2':
             # Выйти из программы
             break
