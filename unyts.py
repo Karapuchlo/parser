@@ -12,7 +12,7 @@ class Vacancy:
         self.alternate_url = alternate_url
 
     def __repr__(self):
-        return f"Вакансия {self.employer_name} с зарплатой {self.salary}"
+        return f"Вакансия {self.employer_name} с зарплатой {self.salary}\n;"
 
 class HHAPIParser:
     def fetch_vacancies_hh(self):
@@ -46,13 +46,13 @@ class HHAPIParser:
 
 # exporter
     def export_vacancies_hh(self, vacancies):
-        # Экспортируем вакансии в CSV-файл
-        with open('vacancies.csv', 'a', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(['Название', 'Работодатель', 'Зарплата', 'Ссылка'])
-            for vacancy in vacancies:
-                if vacancy.salary is not None:
-                    writer.writerow([vacancy.employer_name, vacancy.name, vacancy.salary, vacancy.alternate_url])
+        # Экспортируем вакансии в json-файл
+        with open('vacancies.json', 'a', encoding="UTF-8") as jsonfile:
+            json.dump(vacancies, jsonfile, indent=4, ensure_ascii=False, skipkeys=True, sort_keys=True)
+            #writer.writerow(['Название', 'Работодатель', 'Зарплата', 'Ссылка'])
+            #for vacancy in vacancies:
+                #if vacancy.salary is not None:
+                    #writer.writerow([vacancy.employer_name, vacancy.name, vacancy.salary, vacancy.alternate_url])
 
 
 class HHAPIExporter:
@@ -80,7 +80,7 @@ class SuperjobAPIParser:
     def fetch_vacancies_Superjob(self, salary_from = '60000'):
         # Задаем параметры запроса
         headers = {'X-Api-App-Id': 'v3.r.137463232.a085bb1aaa3c51a9b7b88481b7075aa785b24619.5bc49efdee8512297bdf804e2d7b7cc7f3736ec3'}
-        params = {'keywords': 'Python', 'count': '100'}
+        params = {'keywords': 'Python разработчик', 'count': '100'}
 
         # Отправляем GET-запрос на получение списка вакансий
         if salary_from:
@@ -100,7 +100,6 @@ class SuperjobAPIParser:
             if vacancy_data['payment_from'] is not None:
                 vacancy = Vacancy(employer_name=vacancy_data['profession'], name=vacancy_data['firm_name'], salary=vacancy_data['payment_from'], alternate_url=vacancy_data['link'])
                 vacancies.append(vacancy)
-        print(vacancies)
         # Возвращаем список вакансий
         return vacancies
 
@@ -122,13 +121,10 @@ def run_parser_hh():
     # Экспортируем данные в нужном формате
     parser_hh.export_vacancies_hh(vacancies_hh)
 
-def fetch_vacancies_Superjob():
-    pass
-
-
 def run_parser_Superjob():
     # Создаем экземпляр парсера
     parser_Superjob = SuperjobAPIParser()
+    parser_hh = HHAPIParser()
 
     # Получаем вакансии через API
     vacancies_Superjob = parser_Superjob.fetch_vacancies_Superjob()
@@ -138,4 +134,4 @@ def run_parser_Superjob():
     exporter_Superjob = HHAPIExporter()
     print(exporter_Superjob)
     # Экспортируем данные в нужном формате
-    export_vacancies_hh(vacancies_Superjob)
+    parser_hh.export_vacancies_hh(vacancies_Superjob)

@@ -1,11 +1,7 @@
 
 from unyts import run_parser_hh, run_parser_Superjob
-from unyts import SuperjobAPIParser
-
 
 def main():
-    # Создаем экземпляр парсера
-    parser = SuperjobAPIParser()
 
     while True:
         # Выводим список доступных действий
